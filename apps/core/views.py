@@ -8,3 +8,9 @@ from django.urls import reverse_lazy
 
 def homeView(request):      
     return render(request,template_name='home.html')
+
+def sobreView(request):      
+    return render(request,template_name='about-us.html')
+
+def contatoView(request):      
+    return render(request,template_name='contact.html')

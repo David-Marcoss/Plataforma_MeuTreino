@@ -19,6 +19,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.core',
+    'apps.acounts',
+    'apps.dietas',
+    'apps.treinos',
 ]
 
 MIDDLEWARE = [
