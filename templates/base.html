@@ -51,10 +51,10 @@
                                 <li><a href="#">Dietas</a></li>
                                 <li><a href="{% url 'sobre-nos' %}">About us</a></li>
                                 <li><a href="{% url 'contato' %}">Contato</a></li>
-                                {% if request.user == None %}
-                                    <li><a href="#">Perfil</a></li>
+                                {% if request.user != None %}
+                                    <li><a href="{% url 'login' %}">Login</a></li>
                                 {% else %}
-                                    <li><a href="#">Login</a></li>
+                                    <li><a href="{% url 'logout' %}">Perfil</a></li>
                                 {% endif %}
                                 <li class="search-btn search-trigger"><i class="fa fa-search"></i></li>
                             </ul>
