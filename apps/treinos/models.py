@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.acounts.models import User
 
 class Exercicios(models.Model):
     nome = models.CharField('nome',max_length=100)
     num_series = models.PositiveIntegerField("numero de series")
     num_repeticoes = models.PositiveIntegerField("numero de repeticoes")
     descanco = models.DurationField("Tempo de descanço")
-    #img = models.ImageField(upload_to='exercicios/imagens',verbose_name='imagem descritiva',null=True,blank=True)
+    img = models.ImageField(upload_to='exercicios/imagens',verbose_name='imagem descritiva',null=True,blank=True)
     video = models.CharField('link do Video descritivo',max_length=100,blank=True)
     descricao = models.TextField("Descricao",blank=True)
     user = models.ForeignKey(User,on_delete=models.PROTECT,related_name='exercicios')

@@ -18,6 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'widget_tweaks',
+
     'apps.core',
     'apps.acounts',
     'apps.dietas',
@@ -120,3 +122,6 @@ EMAIL_HOST_PASSWORD = 'ztyuodophslszhms'
 EMAIL_PORT = 587
 
 CONTACT_EMAIL = 'contato@devacademy.com'
+
+
+AUTH_USER_MODEL = "acounts.User"
