@@ -30,6 +30,23 @@ class UserCreationForm(UserCreationForm):
 
 class UserChangeForm(UserChangeForm):
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['imageperfil'].widget.attrs.update({'class': 'form-control'})
+        self.fields['nascimento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['altura'].widget.attrs.update({'class': 'form-control'})
+        self.fields['peso'].widget.attrs.update({'class': 'form-select'})
+        self.fields['sexo'].widget.attrs.update({'class': 'form-control'})
+    
+    password = None
+    sexo = forms.ChoiceField(
+        choices=(('Masculino', 'Masculino'), 
+                 ('Feminino', 'Feminino'),
+                 ('Outro', 'Outro'),), label='Tipo de Usuário')
+
+    nascimento = forms.DateField(label= "Data Nascimento",)
+
     #definição de valores padrao
     class Meta:
         model = User  # model padrao de usuarios do django

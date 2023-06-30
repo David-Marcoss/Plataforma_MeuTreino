@@ -48,7 +48,7 @@ class cadastroview2(UpdateView):
     model= User
     template_name = 'cadastro.html'
 
-    fields = ['imageperfil','nascimento','altura', 'peso','sexo']
+    form_class = UserChangeForm
 
     success_url = reverse_lazy('home') 
 

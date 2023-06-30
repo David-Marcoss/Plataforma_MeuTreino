@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 from django.conf import settings
 from Meu_Treino.settings import AUTH_USER_MODEL
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -13,9 +14,11 @@ class User(AbstractUser):
     imageperfil = models.ImageField(upload_to='perfil/imagens',verbose_name='imagem perfil',null=True,blank=True)
     email = models.EmailField('E-mail',blank=False,unique=True)
     nascimento = models.DateField("Data de Nascimento",null=True,blank=True)
-    sexo = models.CharField('Nome completo',max_length=100,null=True,blank=True)
-    peso = models.DecimalField("Altura",max_digits=4,decimal_places=2,null=True,blank=True)
-    altura = models.DecimalField("Altura",max_digits=2,decimal_places=2,null=True,blank=True)
+    sexo = models.CharField('Sexo',max_length=100,null=True,blank=True)
+    peso = models.DecimalField("Peso",max_digits=4,decimal_places=2,null=True,blank=True, 
+                               validators=[MinValueValidator(10),MaxValueValidator(200)])
+    altura = models.DecimalField("Altura",max_digits=3,decimal_places=2,null=True,blank=True,
+                                 validators=[MinValueValidator(1),MaxValueValidator(2)])
 
     class Meta:
         verbose_name = "Usuário"
