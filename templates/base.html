@@ -55,7 +55,7 @@
                                 {% if request.user == None %}
                                     <li><a href="{% url 'login' %}">Login</a></li>
                                 {% else %}
-                                    <li><a href="{% url 'logout' %}">Perfil</a></li>
+                                    <li><a href="{% url 'perfil' request.user.id %}">Perfil</a></li>
                                 {% endif %}
                                 <li class="search-btn search-trigger"><i class="fa fa-search"></i></li>
                             </ul>

@@ -19,6 +19,8 @@ class User(AbstractUser):
                                validators=[MinValueValidator(10),MaxValueValidator(200)])
     altura = models.DecimalField("Altura",max_digits=3,decimal_places=2,null=True,blank=True,
                                  validators=[MinValueValidator(1),MaxValueValidator(2)])
+    
+    ativo = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Usuário"
