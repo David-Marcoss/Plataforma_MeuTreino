@@ -31,15 +31,6 @@ class User(AbstractUser):
         return f"{self.username}"
 
 
-
-"""
-    Este model serve para auxiliar na recuperação de senhas do usuario
-    e armazenar o historico de auterações de senha ele aramzenha o ususario
-    que esta tenteando alterar senha, uma chave unica string para gerar um link
-    para que o usuario possa alterar senha e a data da criação da geração da chave
-    e se uma confirmação para que seja indicado se a senha foi ou nao alterada 
-
-"""
 class redefinir_senha(models.Model):
 
     User = models.ForeignKey(User,verbose_name='Usuario', related_name='resets',on_delete=models.PROTECT)

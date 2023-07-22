@@ -5,6 +5,10 @@ from django.contrib.auth import get_user_model
 
 from django import forms
 
+from apps.acounts.models import redefinir_senha
+from .mail import send_mail_template
+from .funcoes_auxiliares import generate_hash_key,acesentar_tempo
+
 #para personalizar formularios cria-se uma arquivo form para sobrescreber ou criar formularios
 #este arquivo vai servir para personalizar o user padrao do django
 
@@ -34,7 +38,6 @@ class UserChangeForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['imageperfil'].widget.attrs.update({'class': 'form-control'})
-        self.fields['nascimento'].widget.attrs.update({'class': 'form-control'})
         self.fields['altura'].widget.attrs.update({'class': 'form-control'})
         self.fields['peso'].widget.attrs.update({'class': 'form-select'})
         self.fields['sexo'].widget.attrs.update({'class': 'form-control'})
@@ -44,8 +47,11 @@ class UserChangeForm(UserChangeForm):
         choices=(('Masculino', 'Masculino'), 
                  ('Feminino', 'Feminino'),
                  ('Outro', 'Outro'),), label='Tipo de Usuário')
+    
+    ativo = False
 
     nascimento = forms.DateField(label= "Data Nascimento",)
+
 
     #definição de valores padrao
     class Meta:
@@ -53,13 +59,24 @@ class UserChangeForm(UserChangeForm):
         fields = ['imageperfil','nascimento','altura', 'peso','sexo']
 
 
+class UserUpdateForm(UserChangeForm):
 
-'''
 
-"""
-    Form para redefinição de senha, onde o usuario
-    deve digitar seu e-mail para recuperar senha
-"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nome'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        
+    password = None
+
+    #definição de valores padrao
+    class Meta:
+        model = User  # model padrao de usuarios do django
+        fields = ['nome','email','imageperfil','nascimento','altura', 'peso','sexo']
+
+
+
+
 class Redefinir_senhaForm(forms.Form):
 
     email = forms.EmailField(label='E-mail')
@@ -90,10 +107,9 @@ class Redefinir_senhaForm(forms.Form):
         reset.save()
         
 
-        template_name = 'account/reset_password.html'
+        template_name = 'reset_password.html'
         assunto = "Instruções para redefinir senha"
         context = {'reset':reset}
 
         send_mail_template(assunto,template_name,context,[usuario.email])
 
-'''

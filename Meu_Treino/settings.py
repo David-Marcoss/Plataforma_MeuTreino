@@ -110,18 +110,18 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-DEFAULT_FROM_EMAIL = 'contato@devacademy.com'
+DEFAULT_FROM_EMAIL = 'meutreinosupote@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'contato@devacademy.com'
-EMAIL_HOST_PASSWORD = 'ztyuodophslszhms'
+EMAIL_HOST_USER = 'meutreinosupote@gmail.com'
+EMAIL_HOST_PASSWORD = 'lptuzssmeyxyzahx'
 EMAIL_PORT = 587
 
-CONTACT_EMAIL = 'contato@devacademy.com'
+CONTACT_EMAIL = 'meutreinosupote@gmail.com'
 
 
 AUTH_USER_MODEL = "acounts.User"

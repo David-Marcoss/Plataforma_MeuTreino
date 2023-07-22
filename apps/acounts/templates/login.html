@@ -32,6 +32,16 @@
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7">
+            {% if messages %}
+              <div class="mt-4 container text-center">
+                  {% for i in messages %}
+                  <div class="alert alert-primary fade show alert-dismissible" role="alert">
+                      {{ i }}
+                  </div>
+              {% endfor %}
+
+              </div>
+              {% endif %}
             <h3>Login <strong>Meu Treino</strong></h3>
             
             <p class="mb-4">Faça login para acessar os recursos de nossa plataforma, ou registre-se se ainda não 
@@ -56,7 +66,7 @@
                 
                 <span class="mb-0"><a href="{% url 'cadastro-user' %}" class="forgot-pass">Registre-se</a></span>
 
-                <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
+                <span class="ml-auto"><a href="{% url 'redefinir-senha'%}" class="forgot-pass">Forgot Password</a></span> 
               </div>
 
 

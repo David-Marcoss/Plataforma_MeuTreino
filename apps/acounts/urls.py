@@ -1,6 +1,6 @@
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
-from .views import cadastroview,cadastroview2,perfilview,UpdatePasswordView
+from .views import cadastroview,cadastroview2,UpdatePasswordView,perfilView, redefinir_senhaview, reset_passwordview
 
 
 urlpatterns = [
@@ -8,7 +8,9 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(),name='logout'),
     path('cadastro-user/',cadastroview,name='cadastro-user'),
     path('cadastro-user2/<int:pk>/',cadastroview2.as_view(),name='cadastro-user2'),
-    path('perfil/<int:pk>/',perfilview.as_view(),name='perfil'),
+    path('perfil/',perfilView.as_view(),name='perfil'),
     path('redefinir-senha/<int:pk>/',UpdatePasswordView.as_view(),name='redefinir-senha'),
+    path('redefinir-senha/',redefinir_senhaview,name='redefinir-senha'),
+    path('reset-password/<str:key>/',reset_passwordview,name='reset-password'),
     
 ]
