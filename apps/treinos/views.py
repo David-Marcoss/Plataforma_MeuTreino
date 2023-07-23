@@ -1,8 +1,95 @@
-from django.shortcuts import render
+from typing import Any
+from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView,CreateView,ListView,DeleteView
+from .models import Exercicios
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 
-def exerciciosView(request):      
-    return render(request,template_name='exercicios.html')
 
 def treinosView(request):      
     return render(request,template_name='treinos.html')
+
+class CreateExercicioView(LoginRequiredMixin,CreateView):
+    template_name = "exercicios_form.html"
+    model = Exercicios
+    fields = ["nome","num_series","num_repeticoes","descanco","img","video","descricao"]
+    success_url = success_url= reverse_lazy('exercicios')
+
+    def form_valid(self, form):
+        
+        exercicio = form.save(commit=False) # salva os dados do form no bancos
+        
+        exercicio.user = self.request.user
+        exercicio = form.save()  # salva os dados do form no banco
+
+
+        return super().form_valid(form)
+    
+    def get_context_data(self, *args,**kwargs):
+
+        context = super().get_context_data(*args,**kwargs)
+        context['titulo'] = 'Criar Exercicio'
+        context['botao'] = 'Criar'
+
+        return context
+
+class ListExerciciosView(ListView):
+    model = Exercicios
+    template_name = "exercicios.html"
+    paginate_by = 16
+
+
+class UpdateExerciciosView(LoginRequiredMixin,UpdateView):
+
+    model= Exercicios
+    template_name = "exercicios_form.html"
+    fields = ["nome","num_series","descanco","img","video","descricao"]
+
+    def get_object(self):
+        return get_object_or_404(Exercicios,user=self.request.user,pk=self.kwargs['pk'])
+
+
+    def get_success_url(self):
+        messages.info(self.request,'Exercicio Atualizado!!')
+        
+        return self.request.GET.get('next',reverse_lazy('exercicios'))
+
+    def get_context_data(self, *args,**kwargs):
+        context = super().get_context_data(*args,**kwargs)
+        context['titulo'] = 'Editar Exercicio'
+        context['botao'] = 'Salvar alterações'
+
+        return context
+
+class DeleteExerciciosView(DeleteView):
+    template_name = "exercicios_form.html"
+    model =  model= Exercicios
+    
+    def get_success_url(self):
+        messages.info(self.request,'Exercicio Excluido!!')
+        
+        return self.request.GET.get('next',reverse_lazy('exercicios'))
+
+    def get_object(self):
+        return get_object_or_404(Exercicios,user=self.request.user,pk=self.kwargs['pk'])
+      
+    
+    def get_context_data(self, *args,**kwargs):
+
+        context = super().get_context_data(*args,**kwargs)
+        context['titulo'] = 'Deseja Excluir o Exercício?'
+        context['botao'] = 'Confirmar'
+
+        return context
+    
+
+class ListExerciciosUserView(ListView):
+    model = Exercicios
+    template_name = "exercicios.html"
+    paginate_by = 16
+
+    def get_queryset(self):
+        return self.request.user.exercicios.all()

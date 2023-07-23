@@ -1,14 +1,9 @@
 from datetime import datetime
-import json
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
-
+from django import forms
 from django.shortcuts import render, redirect
-from django.views import View
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import UpdateView
 from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm  #form padrao para alteração de senha
 from django.contrib.auth import authenticate,login #metodos de login
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -52,7 +47,9 @@ def cadastroview(request):
 
         return render(request,template_name,context)
 
-
+class DateInput(forms.DateInput):
+    input_type = 'date'
+    
 class cadastroview2(LoginRequiredMixin,UpdateView):
 
     model= User
@@ -79,6 +76,11 @@ class cadastroview2(LoginRequiredMixin,UpdateView):
         return super().form_valid(form)
     
     
+    def get_form(self, form_class=None):
+        form = super(cadastroview2, self).get_form(form_class)
+        form.fields['data_inicio'].widget = DateInput()
+        return form
+    
     def get_context_data(self, *args,**kwargs):
 
         context = super().get_context_data(*args,**kwargs)
@@ -97,7 +99,7 @@ class perfilView(LoginRequiredMixin,UpdateView):
 
     def get_object(self):
         return User.objects.get(pk=self.request.user.id)
-    
+
     def get_success_url(self):
         messages.info(self.request,'Perfil Atualizado!!')
         

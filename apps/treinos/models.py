@@ -5,7 +5,7 @@ class Exercicios(models.Model):
     nome = models.CharField('nome',max_length=100)
     num_series = models.PositiveIntegerField("numero de series")
     num_repeticoes = models.PositiveIntegerField("numero de repeticoes")
-    descanco = models.DurationField("Tempo de descanço")
+    descanco = models.CharField("Tempo de descanço",max_length=100)
     img = models.ImageField(upload_to='exercicios/imagens',verbose_name='imagem descritiva',null=True,blank=True)
     video = models.CharField('link do Video descritivo',max_length=100,blank=True)
     descricao = models.TextField("Descricao",blank=True)
