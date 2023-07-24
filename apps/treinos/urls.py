@@ -8,6 +8,7 @@ urlpatterns = [
     path('exercicios/create/',CreateExercicioView.as_view(),name='exercicios-create'),
     path('exercicios/update/<int:pk>/',UpdateExerciciosView.as_view(),name='exercicios-update'),
     path('exercicios/delete/<int:pk>/',DeleteExerciciosView.as_view(),name='exercicios-delete'),
+    path('exercicios/detail/<int:pk>/',DetailExerciciosView.as_view(),name='exercicios-detail'),
     
     
 ]

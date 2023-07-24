@@ -1,6 +1,8 @@
 import hashlib
 import string
 import random
+import validators
+
 
 """
     funções auxiliares uzadas para redefinição de senha do usuario
@@ -64,3 +66,45 @@ def compara_tempo(tempo1,tempo2):
         expirou = True
 
     return expirou
+
+"""
+recebe um link do video do youtube e faz tratamento 
+para que o video possa ser incorporado no site
+
+"""
+def trata_link(video):
+
+    link = 'https://www.youtube.com/embed/'
+    video = video.split('/')
+
+    id_video = video[-1]
+
+    id_video = id_video.replace('watch?v=','')
+  
+    link += id_video
+
+    return link
+
+
+"""
+recebe um link e verifica se o link é valido
+"""
+def verifica_link(video):
+    
+    valid=validators.url(video)
+
+    link = link = 'https://www.youtube.com/'
+    link2 = 'https://youtu.be/'
+
+    if valid and video != link:
+
+        if link != video[:len(link)] and link2 != video[:len(link2)] :
+            valid = False
+
+    else:
+        valid = False
+    
+    return valid
+
+    
+

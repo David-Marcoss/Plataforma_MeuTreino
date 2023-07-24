@@ -10,6 +10,7 @@ class Exercicios(models.Model):
     video = models.CharField('link do Video descritivo',max_length=100,blank=True)
     descricao = models.TextField("Descricao",blank=True)
     user = models.ForeignKey(User,on_delete=models.PROTECT,related_name='exercicios')
+    categoria = models.CharField("Categoria",max_length=100,blank=False)
 
 
     def __str__(self):
@@ -26,7 +27,6 @@ class Treinos(models.Model):
         return self.nome
     
 class Exercicios_do_treino(models.Model):
-    exercicio = models.ForeignKey(Exercicios,on_delete=models.PROTECT,related_name='exercicios_do_treino')
+    exercicio = models.ForeignKey(Exercicios,on_delete=models.PROTECT,related_name='exercicio_do_treino')
     treino = models.ForeignKey(Treinos,on_delete=models.PROTECT,related_name='exercicios_do_treino')
-
 

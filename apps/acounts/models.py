@@ -49,4 +49,3 @@ class redefinir_senha(models.Model):
         ordering = ['-criado_em']
 
 
-

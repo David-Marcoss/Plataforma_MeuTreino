@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from apps.acounts.funcoes_auxiliares import compara_tempo
+from apps.auxiliares.funcoes_auxiliares import compara_tempo
 
 from .forms import Redefinir_senhaForm, UserCreationForm,UserChangeForm, UserUpdateForm
 
@@ -30,7 +30,6 @@ def cadastroview(request):
                 
                 login(request,user)
                 
-                messages.info(request,"Cadastro concluido com Sucesso !!!")
                 
                 return redirect('cadastro-user2',pk=request.user.id)
         
@@ -78,7 +77,7 @@ class cadastroview2(LoginRequiredMixin,UpdateView):
     
     def get_form(self, form_class=None):
         form = super(cadastroview2, self).get_form(form_class)
-        form.fields['data_inicio'].widget = DateInput()
+        form.fields['nascimento'].widget = DateInput()
         return form
     
     def get_context_data(self, *args,**kwargs):
@@ -158,7 +157,7 @@ def redefinir_senhaview(request):
         else:
             
             form.save()
-            success_msg = 'E-mail confirmado com sucesso!!/nFoi enviado um E-mail para você com mais detalhes para redefinir sua senha'
+            success_msg = 'E-mail confirmado com sucesso!! Foi enviado um E-mail para você com mais detalhes para redefinir sua senha'
 
         #indica se a operação ocorreu com sucesso
         success = True

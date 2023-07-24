@@ -1,11 +1,12 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView,CreateView,ListView,DeleteView
+from django.views.generic import UpdateView,CreateView,ListView,DeleteView,DetailView
 from .models import Exercicios
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from .form import ExerciciosForm
 
 
 
@@ -15,13 +16,18 @@ def treinosView(request):
 class CreateExercicioView(LoginRequiredMixin,CreateView):
     template_name = "exercicios_form.html"
     model = Exercicios
-    fields = ["nome","num_series","num_repeticoes","descanco","img","video","descricao"]
-    success_url = success_url= reverse_lazy('exercicios')
+    form_class = ExerciciosForm
+
+    def get_success_url(self):
+        messages.info(self.request,'Exercicio criado!!')
+        
+        return reverse_lazy('exercicios-user')
 
     def form_valid(self, form):
         
         exercicio = form.save(commit=False) # salva os dados do form no bancos
         
+        exercicio.categoria = form.cleaned_data['categoria']
         exercicio.user = self.request.user
         exercicio = form.save()  # salva os dados do form no banco
 
@@ -46,7 +52,7 @@ class UpdateExerciciosView(LoginRequiredMixin,UpdateView):
 
     model= Exercicios
     template_name = "exercicios_form.html"
-    fields = ["nome","num_series","descanco","img","video","descricao"]
+    form_class = ExerciciosForm
 
     def get_object(self):
         return get_object_or_404(Exercicios,user=self.request.user,pk=self.kwargs['pk'])
@@ -93,3 +99,16 @@ class ListExerciciosUserView(ListView):
 
     def get_queryset(self):
         return self.request.user.exercicios.all()
+
+class DetailExerciciosView(DetailView):
+    template_name = 'exercicios_detail.html'
+    model = Exercicios
+
+    def get_context_data(self, *args,**kwargs):
+
+        context = super().get_context_data(*args,**kwargs)
+        ex = Exercicios.objects.get(pk=self.kwargs['pk'])
+
+        context['object_list'] = Exercicios.objects.filter(categoria = ex.categoria).exclude(pk = ex.pk)[:4]
+
+        return context

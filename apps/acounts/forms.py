@@ -6,8 +6,8 @@ from django.contrib.auth import get_user_model
 from django import forms
 
 from apps.acounts.models import redefinir_senha
-from .mail import send_mail_template
-from .funcoes_auxiliares import generate_hash_key,acesentar_tempo
+from apps.auxiliares.mail import send_mail_template
+from apps.auxiliares.funcoes_auxiliares import generate_hash_key,acesentar_tempo
 
 #para personalizar formularios cria-se uma arquivo form para sobrescreber ou criar formularios
 #este arquivo vai servir para personalizar o user padrao do django
