@@ -1,4 +1,5 @@
 from typing import Any
+from django import forms
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
@@ -10,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .form import ExerciciosForm,TreinosForm,ExerciciosTreinoForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 
@@ -168,7 +170,30 @@ def CreateExerciciosTreino(request,pk):
             return redirect('treinos')
     
     else:
-        form = ExerciciosTreinoForm()
+        busca = request.GET.get("Busca")
+
+        if busca:
+            values = busca.split()
+            object_list = []
+            
+            for busca in values:    
+                if len(busca) > 2:
+                    object_list += Exercicios.objects.filter(
+                        Q(nome__icontains = busca ) | Q(categoria__icontains = busca ) )  
+
+            object_list = set(object_list) 
+            
+            choices = []
+            
+            for i in object_list:
+                choices.append((i.id,i))
+            
+            form = ExerciciosTreinoForm()
+            form.fields['exercicio'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                            choices=choices,label="Exercicios")
+        else:
+            form = ExerciciosTreinoForm()
+
 
 
     context = {}
