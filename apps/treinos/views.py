@@ -1,12 +1,15 @@
 from typing import Any
 from django.db.models.query import QuerySet
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView,CreateView,ListView,DeleteView,DetailView
-from .models import Exercicios
+from .models import Exercicios,Treinos,Exercicios_do_treino
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .form import ExerciciosForm
+from .form import ExerciciosForm,TreinosForm,ExerciciosTreinoForm
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -39,6 +42,7 @@ class CreateExercicioView(LoginRequiredMixin,CreateView):
         context = super().get_context_data(*args,**kwargs)
         context['titulo'] = 'Criar Exercicio'
         context['botao'] = 'Criar'
+        context['pagina'] = 'Exercicios'
 
         return context
 
@@ -67,6 +71,7 @@ class UpdateExerciciosView(LoginRequiredMixin,UpdateView):
         context = super().get_context_data(*args,**kwargs)
         context['titulo'] = 'Editar Exercicio'
         context['botao'] = 'Salvar alterações'
+        context['pagina'] = 'Exercicios'
 
         return context
 
@@ -112,3 +117,79 @@ class DetailExerciciosView(DetailView):
         context['object_list'] = Exercicios.objects.filter(categoria = ex.categoria).exclude(pk = ex.pk)[:4]
 
         return context
+
+
+@login_required
+def CreateTreinoView(request):
+    template_name = "exercicios_form.html"
+
+    if request.method == 'POST': 
+        form = TreinosForm(request.POST, request.FILES)
+
+        if form.is_valid(): 
+            treino = form.save(commit=False)
+            treino.categoria = form.cleaned_data['categoria']
+            treino.user = request.user
+            treino = form.save()  # salva os dados do form no banco
+
+            return redirect('treinos-create-exercicios',pk=int(treino.id))
+    
+    else:
+        form = TreinosForm()
+
+
+    context = {}
+
+    context['titulo'] = 'Criar Treino'
+    context['botao'] = 'Criar'
+    context['pagina'] = 'Treinos'
+    context['form'] = form
+
+    return render(request,template_name,context)
+
+@login_required
+def CreateExerciciosTreino(request,pk):
+    template_name = "exercicios_treino.html"
+    treino = Treinos.objects.get(pk=pk)
+
+    if request.method == 'POST': 
+        form = ExerciciosTreinoForm(request.POST, request.FILES)
+
+        if form.is_valid(): 
+            
+            object = form
+
+            for exercicios in object.cleaned_data['exercicio']:
+                print(exercicios)
+                ex = Exercicios.objects.get(pk=exercicios)
+                Exercicios_do_treino.objects.create(exercicio=ex,treino=treino)
+            
+            
+            return redirect('treinos')
+    
+    else:
+        form = ExerciciosTreinoForm()
+
+
+    context = {}
+
+    context['titulo'] = 'Adcionar Exercicios'
+    context['botao'] = 'Salvar'
+    context['treino'] = treino
+    context['form'] = form
+
+    return render(request,template_name,context)
+
+    
+class ListTreinosView(ListView):
+    model = Treinos
+    template_name = "treinos.html"
+    paginate_by = 6
+
+class ListTreinosUserView(ListView):
+    model = Treinos
+    template_name = "treinos.html"
+    paginate_by = 6
+
+    def get_queryset(self):
+        return self.request.user.treinos.all()

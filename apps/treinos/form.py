@@ -1,8 +1,8 @@
 from django import forms
 
 from apps.auxiliares.funcoes_auxiliares import trata_link, verifica_link
-from .models import Exercicios
-
+from .models import Exercicios,Treinos,Exercicios_do_treino
+from multiselectfield import MultiSelectField
 
 class ExerciciosForm(forms.ModelForm):
 
@@ -12,6 +12,8 @@ class ExerciciosForm(forms.ModelForm):
                  ('Costas', 'Costas'),
                  ('Bisceps', 'Bisceps'), 
                  ('Trisceps', 'Trisceps'),
+                 ('Ombro', 'Ombro'),
+                 ('Panturrilha','Panturrilha'),
                  ('Antebraço', 'Antebraço'),
                  ('Quadriceps', 'Quadriceps'), 
                  ('Posterior coxa', 'Posterior coxa'),
@@ -40,3 +42,39 @@ class ExerciciosForm(forms.ModelForm):
                 raise forms.ValidationError('Por favor, digite um link valido!!')
         return '' 
 
+class TreinosForm(forms.ModelForm):
+
+    categoria = forms.ChoiceField(
+        choices=(('Perna', 'Perna'), 
+                 ('Peito', 'Peito'),
+                 ('Costas', 'Costas'),
+                 ('Bisceps', 'Bisceps'), 
+                 ('Trisceps', 'Trisceps'),
+                 ('Ombro', 'Ombro'),
+                 ('Panturrilha','Panturrilha'),
+                 ('Antebraço', 'Antebraço'),
+                 ('Quadriceps', 'Quadriceps'), 
+                 ('Posterior coxa', 'Posterior coxa'),
+                 ('Abdominal', 'Abdominal'),
+                 ('ABS', 'ABS'),
+                 ('Powerlifting', 'powerlifting'), 
+                 ('Calistenia', 'calistenia'),
+                 ('Outro', 'Outro')
+                 ,), label='Categoria')
+     
+    class Meta:
+        model = Treinos
+
+        fields = ['nome','img','descricao','categoria']
+
+class ExerciciosTreinoForm(forms.Form):
+    exercicios = Exercicios.objects.all()
+    choices = []
+    for i in exercicios:
+        choices.append((i.id,i))
+    
+    exercicio = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                         choices=choices,label="Exercicios")
+    
+    class Meta:
+        fields = ['exercicio']

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href='{% static "css/barfiller.css"   %}'type="text/css">
     <link rel="stylesheet" href='{% static "css/slicknav.min.css" %}' type="text/css">
     <link rel="stylesheet" href='{% static "css/style.css" %}' type="text/css">
+    
 </head>
 
 <body>
@@ -71,6 +72,7 @@
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                       <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a>
                                       <a class="dropdown-item" href="{% url 'exercicios-user' %}">Meus Exercícios</a>
+                                      <a class="dropdown-item" href="{% url 'treinos-user' %}">Meus Treinos</a>
                                       <a class="dropdown-item" href="{% url 'logout' %}">Sair</a>
                                     </div>
                                   </li>
