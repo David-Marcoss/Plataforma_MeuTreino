@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'crispy_forms',
     'crispy_bootstrap5',
-    'django_select2',
 
     'apps.core',
     'apps.acounts',
@@ -71,14 +70,8 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    'select2': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
 }
 
-# Set the cache backend to select2
-SELECT2_CACHE_BACKEND = 'select2'
 
 WSGI_APPLICATION = 'Meu_Treino.wsgi.application'
 

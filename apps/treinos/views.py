@@ -149,6 +149,82 @@ def CreateTreinoView(request):
 
     return render(request,template_name,context)
 
+class UpdateTreinoView(LoginRequiredMixin,UpdateView):
+
+    model= Treinos
+    fields = ['nome','img','descricao']
+    template_name = "exercicios_form.html"
+    
+
+    def get_object(self):
+        return get_object_or_404(Treinos,user=self.request.user,pk=self.kwargs['pk'])
+
+
+    def get_success_url(self):
+        messages.info(self.request,'Treino Atualizado!!')
+        
+        return self.request.GET.get('next',reverse_lazy('treinos'))
+
+    def get_context_data(self, *args,**kwargs):
+        context = super().get_context_data(*args,**kwargs)
+        context['titulo'] = 'Editar Treino'
+        context['botao'] = 'Salvar alterações'
+        context['pagina'] = 'Treinos'
+
+        return context
+
+class DeleteTreinosView(DeleteView):
+    template_name = "exercicios_form.html"
+    model =  model= Treinos
+    
+    def get_success_url(self):
+        messages.info(self.request,'Treino Excluido!!')
+        
+        return self.request.GET.get('next',reverse_lazy('treinos'))
+
+    def get_object(self):
+        return get_object_or_404(Treinos,user=self.request.user,pk=self.kwargs['pk'])
+      
+    
+    def get_context_data(self, *args,**kwargs):
+
+        context = super().get_context_data(*args,**kwargs)
+        context['titulo'] = 'Deseja Excluir o Treino?'
+        context['botao'] = 'Confirmar'
+        context['pagina'] = 'Treinos'
+
+        return context
+
+class ListTreinosView(ListView):
+    model = Treinos
+    template_name = "treinos.html"
+    paginate_by = 6
+
+class ListTreinosUserView(ListView):
+    model = Treinos
+    template_name = "treinos.html"
+    paginate_by = 6
+
+    def get_queryset(self):
+        return self.request.user.treinos.all()
+
+
+@login_required
+def DetailExerciciosTreinoView(request,pk):
+    template_name = 'treinos_detail.html'
+
+    context = {}
+    treino = Treinos.objects.get(pk=pk)
+    context['treino'] = treino
+
+    exercicios = []
+    for i in treino.exercicios_do_treino.all():
+        exercicios.append(i.exercicio)
+    
+    context['exercicios'] = exercicios
+
+    return render(request,template_name,context)    
+
 @login_required
 def CreateExerciciosTreino(request,pk):
     template_name = "exercicios_treino.html"
@@ -162,12 +238,15 @@ def CreateExerciciosTreino(request,pk):
             object = form
 
             for exercicios in object.cleaned_data['exercicio']:
-                print(exercicios)
                 ex = Exercicios.objects.get(pk=exercicios)
-                Exercicios_do_treino.objects.create(exercicio=ex,treino=treino)
+    
+                if not Exercicios_do_treino.objects.filter(exercicio=ex,treino = treino).exists():
+                    Exercicios_do_treino.objects.create(exercicio=ex,treino=treino)
             
             
-            return redirect('treinos')
+            messages.info(request,'Seu Treino foi criado!!')
+
+            return redirect('treinos-detail',pk=treino.id)
     
     else:
         busca = request.GET.get("Busca")
@@ -195,7 +274,6 @@ def CreateExerciciosTreino(request,pk):
             form = ExerciciosTreinoForm()
 
 
-
     context = {}
 
     context['titulo'] = 'Adcionar Exercicios'
@@ -205,16 +283,25 @@ def CreateExerciciosTreino(request,pk):
 
     return render(request,template_name,context)
 
+@login_required 
+def DeleteExerciciosTreinoView(request,id_treino,id_ex):
+    template_name = "exercicios_form.html"
     
-class ListTreinosView(ListView):
-    model = Treinos
-    template_name = "treinos.html"
-    paginate_by = 6
+   
+    Treino =  get_object_or_404(Treinos,user=request.user,pk=id_treino)
+    
+    exercicio =  get_object_or_404(Exercicios_do_treino,treino=id_treino,exercicio=id_ex)
+    
+    if request.method == 'POST': 
+    
+        messages.info(request,'Exercicio Excluido!!')
+        exercicio.delete()
 
-class ListTreinosUserView(ListView):
-    model = Treinos
-    template_name = "treinos.html"
-    paginate_by = 6
+        return redirect('treinos-detail',pk=id_treino)
 
-    def get_queryset(self):
-        return self.request.user.treinos.all()
+    context = {}
+    context['titulo'] = 'Deseja Excluir o Execicio do Treino?'
+    context['botao'] = 'Confirmar'
+
+    return render(request,template_name,context)
+

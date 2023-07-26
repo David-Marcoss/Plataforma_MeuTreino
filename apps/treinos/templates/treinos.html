@@ -45,7 +45,7 @@
                                 <li>{{treinos.categoria}}</li>
                             </ul>
                             
-                            <a href="#">
+                            <a href="{% url 'treinos-detail' treinos.pk %}">
                             {% if treinos.img %}
                                 
                                 <div class="blog-img set-bg" data-setbg="{{ treinos.img.url }}">
@@ -71,7 +71,7 @@
                                     <span>{{treinos.user.username}}</span>
                                 </div>
                             </div>
-                            <a href="#" class="primary-btn">Acessar</a>
+                            <a href="{% url 'treinos-detail' treinos.pk %}" class="primary-btn">Acessar</a>
                         </div>
                     </div>
                 </div>

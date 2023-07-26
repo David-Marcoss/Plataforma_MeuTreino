@@ -10,7 +10,6 @@ urlpatterns = [
     path("acounts/",include('apps.acounts.urls')),
     path("",include('apps.dietas.urls')),
     path("",include('apps.treinos.urls')),
-    path("select2/", include("django_select2.urls")),
 ]
 
 

@@ -8,10 +8,15 @@ urlpatterns = [
     path('exercicios/update/<int:pk>/',UpdateExerciciosView.as_view(),name='exercicios-update'),
     path('exercicios/delete/<int:pk>/',DeleteExerciciosView.as_view(),name='exercicios-delete'),
     path('exercicios/detail/<int:pk>/',DetailExerciciosView.as_view(),name='exercicios-detail'),
-    path('treinos/create/',CreateTreinoView,name='treinos-create'),
-    path('treinos/create/exercicios/<int:pk>/',CreateExerciciosTreino,name='treinos-create-exercicios'),
     path('treinos/',ListTreinosView.as_view(),name='treinos'),
-    path('treinos/user/',ListTreinosUserView.as_view(),name='treinos-user'), 
+    path('treinos/user/',ListTreinosUserView.as_view(),name='treinos-user'),
+    path('treinos/update/<int:pk>/',UpdateTreinoView.as_view(),name='treinos-update'), 
+    path('treinos/delete/<int:pk>/',DeleteTreinosView.as_view(),name='treinos-delete'), 
+    path('treinos/detail/<int:pk>/',DetailExerciciosTreinoView,name='treinos-detail'), 
+    path('treinos/create/',CreateTreinoView,name='treinos-create'),
+    path('treinos/exercicios-treino/create/<int:pk>/',CreateExerciciosTreino,name='treinos-create-exercicios'),
+    path('treinos/exercicios-treino/delete/<int:id_treino>/<int:id_ex>/',DeleteExerciciosTreinoView,name='treinos-exercicios-delete'),
+    
     
     
 ]

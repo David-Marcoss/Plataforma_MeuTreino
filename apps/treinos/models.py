@@ -32,8 +32,8 @@ class Treinos(models.Model):
         return self.nome
     
 class Exercicios_do_treino(models.Model):
-    exercicio = models.ForeignKey(Exercicios,on_delete=models.PROTECT,related_name='exercicio_do_treino')
-    treino = models.ForeignKey(Treinos,on_delete=models.PROTECT,related_name='exercicios_do_treino')
+    exercicio = models.ForeignKey(Exercicios,on_delete=models.CASCADE,related_name='exercicio_do_treino')
+    treino = models.ForeignKey(Treinos,on_delete=models.CASCADE,related_name='exercicios_do_treino')
 
     def __str__(self):
         return f" Exercicios do {self.treino}"
