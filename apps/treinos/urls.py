@@ -14,6 +14,7 @@ urlpatterns = [
     path('treinos/delete/<int:pk>/',DeleteTreinosView.as_view(),name='treinos-delete'), 
     path('treinos/detail/<int:pk>/',DetailExerciciosTreinoView,name='treinos-detail'), 
     path('treinos/create/',CreateTreinoView,name='treinos-create'),
+    path('treinos/manage/<int:pk>/',treinos_manage,name='treinos-manage'), 
     path('treinos/exercicios-treino/create/<int:pk>/',CreateExerciciosTreino,name='treinos-create-exercicios'),
     path('treinos/exercicios-treino/delete/<int:id_treino>/<int:id_ex>/',DeleteExerciciosTreinoView,name='treinos-exercicios-delete'),
     

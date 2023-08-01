@@ -31,6 +31,13 @@ class Treinos(models.Model):
     def __str__(self):
         return self.nome
     
+    def get_exercicios_treino(self):
+        exercicios = []
+        for i in self.exercicios_do_treino.all():
+            exercicios.append(i.exercicio)
+        
+        return exercicios
+        
 class Exercicios_do_treino(models.Model):
     exercicio = models.ForeignKey(Exercicios,on_delete=models.CASCADE,related_name='exercicio_do_treino')
     treino = models.ForeignKey(Treinos,on_delete=models.CASCADE,related_name='exercicios_do_treino')

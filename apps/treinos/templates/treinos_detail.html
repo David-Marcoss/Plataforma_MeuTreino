@@ -12,7 +12,7 @@
                 <div class="breadcrumb-content">
                     <h2>{{treino.nome}}</h2>
                     {% if request.user == treino.user %}
-                    <a href="{% url 'exercicios-create' %}">
+                    <a href="{% url 'treinos-manage' treino.pk %}">
                         <button type="button" class="btn btn-primary">Editar Treino</button>
                     </a>
                     {% else %}

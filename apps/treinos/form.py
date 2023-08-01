@@ -78,3 +78,8 @@ class ExerciciosTreinoForm(forms.Form):
     
     class Meta:
         fields = ['exercicio']
+
+class TreinoForm(forms.Form):
+    
+    class Meta:
+        fields =['nome','descricao','img']

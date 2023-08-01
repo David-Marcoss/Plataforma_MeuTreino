@@ -217,11 +217,7 @@ def DetailExerciciosTreinoView(request,pk):
     treino = Treinos.objects.get(pk=pk)
     context['treino'] = treino
 
-    exercicios = []
-    for i in treino.exercicios_do_treino.all():
-        exercicios.append(i.exercicio)
-    
-    context['exercicios'] = exercicios
+    context['exercicios'] = treino.get_exercicios_treino()
 
     return render(request,template_name,context)    
 
@@ -246,7 +242,7 @@ def CreateExerciciosTreino(request,pk):
             
             messages.info(request,'Seu Treino foi criado!!')
 
-            return redirect('treinos-detail',pk=treino.id)
+            return redirect('treinos-manage',pk=treino.id)
     
     else:
         busca = request.GET.get("Busca")
@@ -264,14 +260,25 @@ def CreateExerciciosTreino(request,pk):
             
             choices = []
             
-            for i in object_list:
-                choices.append((i.id,i))
+            for exercicio in object_list:
+                if not Exercicios_do_treino.objects.filter(exercicio=exercicio,treino = treino).exists():
+                    choices.append((exercicio.id,exercicio))
             
             form = ExerciciosTreinoForm()
             form.fields['exercicio'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                             choices=choices,label="Exercicios")
         else:
             form = ExerciciosTreinoForm()
+
+            exercicios = Exercicios.objects.all()
+            choices = []
+            
+            for exercicio in exercicios:
+                if not Exercicios_do_treino.objects.filter(exercicio=exercicio,treino = treino).exists():
+                    choices.append((exercicio.id,exercicio))
+            
+            form.fields['exercicio'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                            choices=choices,label="Exercicios")
 
 
     context = {}
@@ -282,6 +289,7 @@ def CreateExerciciosTreino(request,pk):
     context['form'] = form
 
     return render(request,template_name,context)
+
 
 @login_required 
 def DeleteExerciciosTreinoView(request,id_treino,id_ex):
@@ -297,7 +305,7 @@ def DeleteExerciciosTreinoView(request,id_treino,id_ex):
         messages.info(request,'Exercicio Excluido!!')
         exercicio.delete()
 
-        return redirect('treinos-detail',pk=id_treino)
+        return redirect('treinos-manage',pk=id_treino)
 
     context = {}
     context['titulo'] = 'Deseja Excluir o Execicio do Treino?'
@@ -305,3 +313,34 @@ def DeleteExerciciosTreinoView(request,id_treino,id_ex):
 
     return render(request,template_name,context)
 
+    
+@login_required
+def treinos_manage(request, pk):
+
+    template_name = 'treinos_manage.html'
+    
+    treino = get_object_or_404(Treinos,user=request.user,pk=pk)
+    
+    form = TreinosForm(instance=treino)
+    
+    if request.method == "POST":
+    
+        form = TreinosForm(request.POST, instance=treino)
+
+        if form.is_valid():
+            print("anjnakjcn")
+            form.save()
+
+            messages.info(request,'Alterações salvas!!')
+
+            return redirect('treinos-manage',pk=treino.pk)
+
+    context = {}
+
+    context['titulo'] = 'Editar Treino'
+    context['form'] = form
+    context['botao'] = 'Confirmar'
+    context['exercicios'] = treino.get_exercicios_treino()
+    context['treino'] = treino
+
+    return render(request, template_name, context)
