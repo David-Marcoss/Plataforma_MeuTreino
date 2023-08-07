@@ -1,8 +1,4 @@
-from typing import Any
 from django import forms
-from django.db.models.query import QuerySet
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView,CreateView,ListView,DeleteView,DetailView
@@ -13,7 +9,8 @@ from .form import ExerciciosForm,TreinosForm,ExerciciosTreinoForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 def treinosView(request):      
     return render(request,template_name='treinos.html')
@@ -27,7 +24,7 @@ class CreateExercicioView(LoginRequiredMixin,CreateView):
         messages.info(self.request,'Exercicio criado!!')
         
         return reverse_lazy('exercicios-user')
-
+    
     def form_valid(self, form):
         
         exercicio = form.save(commit=False) # salva os dados do form no bancos

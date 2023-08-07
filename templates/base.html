@@ -56,8 +56,13 @@
                                     <a class="nav-link" href="{% url 'treinos' %}">Treinos</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Dietas</a>
+                                    <a class="nav-link" href="{% url 'receitas' %}">Receitas</a>
                                 </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'receitas' %}">Dietas</a>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'sobre-nos' %}">Sobre Nós</a>
                                 </li>
@@ -73,6 +78,7 @@
                                       <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a>
                                       <a class="dropdown-item" href="{% url 'exercicios-user' %}">Meus Exercícios</a>
                                       <a class="dropdown-item" href="{% url 'treinos-user' %}">Meus Treinos</a>
+                                      <a class="dropdown-item" href="{% url 'receitas-user' %}">Minhas Receitas</a>
                                       <a class="dropdown-item" href="{% url 'logout' %}">Sair</a>
                                     </div>
                                   </li>
@@ -119,10 +125,9 @@
                         <div class="footer-menu">
                             <ul>
                                 <li><a href="{% url 'home' %}">Home</a></li>
-                                <li><a href="#">Exercicios</a></li>
-                                <li><a href="#">Treinos</a></li>
-                                <li><a href="#">Dietas</a></li>
-                                <li><a href="#">Perfil</a></li>
+                                <li><a href="{% url 'exercicios' %}">Exercicios</a></li>
+                                <li><a href="{% url 'treinos' %}">Treinos</a></li>
+                                <li><a href="{% url 'receitas' %}">Dietas</a></li>
                                 <li><a href="{% url 'sobre-nos' %}">About us</a></li>
                                 <li><a href="{% url 'contato' %}">Contato</a></li>
                             </ul>
@@ -163,6 +168,7 @@
     <script src='{% static "js/circle-progress.min.js"      %}'></script>
     <script src='{% static "js/jquery.barfiller.js"         %}'></script>
     <script src='{% static "js/main.js"                     %}'></script>
+   
 
 </body>
 
