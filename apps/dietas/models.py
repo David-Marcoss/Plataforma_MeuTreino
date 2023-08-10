@@ -14,6 +14,39 @@ class Receitas(models.Model):
     criado_em= models.DateTimeField('criado em: ',auto_now_add=True)
     atualizado_em= models.DateTimeField('atualizado em: ',auto_now=True)
 
+    def __str__(self):
+        return self.nome
+
+class Plano_dieta(models.Model):
+    nome = models.CharField('nome',max_length=100)
+    user = models.OneToOneField(User,on_delete=models.PROTECT,related_name='dieta')
+    criado_em= models.DateTimeField('criado em: ',auto_now_add=True)
+    atualizado_em= models.DateTimeField('atualizado em: ',auto_now=True)
+
+    def get_refeicoes(self):
+        return self.refeicoes.all()
 
     def __str__(self):
         return self.nome
+    
+        
+class Refeicoes(models.Model):
+    nome = models.CharField('nome',max_length=100)
+    tipo_refeicao = models.CharField("Tipo de Refeição", max_length=100,blank=True)
+    total_calorias = models.IntegerField("Total de calorias",blank=True,null=True)
+    dieta = models.ForeignKey(Plano_dieta,on_delete=models.CASCADE,related_name='refeicoes')
+
+    def get_alimentos(self):
+        return self.alimentos.all()
+    
+    def __str__(self):
+        return f"Refeições do {self.dieta}"
+
+class Alimentos_da_Refeicao(models.Model):
+    quantidade  = models.CharField('Quantidade',max_length=200,null=True)
+    refeicao = models.ForeignKey(Refeicoes,on_delete=models.CASCADE,related_name='alimentos')
+    receita = models.ForeignKey(Receitas,on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"Alimentos da Refeição"
+

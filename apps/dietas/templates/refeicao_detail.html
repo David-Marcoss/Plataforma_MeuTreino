@@ -22,7 +22,7 @@
                     
                     <div class="links">
                         <a href="{% url 'home' %}">Home</a>
-                        <a href="{% url 'refeicoes' %}" class="rt-breadcrumb">Refeições</a>
+                        <a href="{% url 'receitas' %}" class="rt-breadcrumb">Refeições</a>
                     </div>
                     {% endif %}
                 </div>
@@ -38,13 +38,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
+                    {% if object.video %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zvKybxhcO1g" title="YouTube video player" allowfullscreen></iframe>
+                      </div>
+                    {% else %}
                     <div class="receipe-slider owl-carousel">
                         {% if object.img %}
                             <img src="{{object.img.url}}" style="max-height: 435px;" alt="">
+                            
                         {% else %}
                             <img src="{% static 'img/bg5.jpg' %}" alt="">
                         {% endif %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -22,6 +22,13 @@
     <link rel="stylesheet" href='{% static "css/barfiller.css"   %}'type="text/css">
     <link rel="stylesheet" href='{% static "css/slicknav.min.css" %}' type="text/css">
     <link rel="stylesheet" href='{% static "css/style.css" %}' type="text/css">
+
+
+    <script>
+        $(document).ready(function(){
+            $('[data-bs-toggle="tooltip"]').tooltip({ placement : "top" });   
+        });
+    </script>
     
 </head>
 
@@ -60,11 +67,11 @@
                                 </li>
                                 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'receitas' %}">Dietas</a>
+                                    <a class="nav-link" href="{% url 'plano-dieta' %}">Dieta</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'sobre-nos' %}">Sobre Nós</a>
+                                    <a class="nav-link" href="{% url 'sobre-nos' %}">Sobre</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'contato' %}">Contato</a>
@@ -79,6 +86,7 @@
                                       <a class="dropdown-item" href="{% url 'exercicios-user' %}">Meus Exercícios</a>
                                       <a class="dropdown-item" href="{% url 'treinos-user' %}">Meus Treinos</a>
                                       <a class="dropdown-item" href="{% url 'receitas-user' %}">Minhas Receitas</a>
+                                      <a class="dropdown-item" href="{% url 'plano-dieta' %}">Plano de Dieta</a>
                                       <a class="dropdown-item" href="{% url 'logout' %}">Sair</a>
                                     </div>
                                   </li>
@@ -168,7 +176,9 @@
     <script src='{% static "js/circle-progress.min.js"      %}'></script>
     <script src='{% static "js/jquery.barfiller.js"         %}'></script>
     <script src='{% static "js/main.js"                     %}'></script>
-   
+
+  
+ 
 
 </body>
 
