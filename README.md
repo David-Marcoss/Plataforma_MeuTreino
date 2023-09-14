@@ -20,16 +20,16 @@
 
 ### 4ª passo Criar banco de dados e tabelas
 
-    pyton3 manage.py makemigrations
-    pyton3 manage.py migrate
+    python3 manage.py makemigrations
+    python3 manage.py migrate
 
 ### 5ª passo(opcional) Criar usuario admin
 
-    pyton3 manage.py createsuperuser
+    python3 manage.py createsuperuser
 
 ### 6ª passo rodar a aplicação
 
-    pyton3 manage.py runserver
+    python3 manage.py runserver
 
 ### 7ª passo Se divirta acessando a aplicação
 -No seu browser favorito acesse
