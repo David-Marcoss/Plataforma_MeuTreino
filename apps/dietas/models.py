@@ -7,7 +7,7 @@ class Receitas(models.Model):
     preparo = models.TextField("Preparo")
     tempo_preparo = models.CharField("Tempo de Preparo",max_length=100)
     calorias = models.PositiveIntegerField("Calorias")
-    img = models.ImageField(upload_to='exercicios/imagens',verbose_name='imagem descritiva',null=True,blank=True)
+    img = models.ImageField(upload_to='dietas/imagens',verbose_name='imagem descritiva',null=True,blank=True)
     video = models.CharField('link do Video descritivo',max_length=100,blank=True)
     user = models.ForeignKey(User,on_delete=models.PROTECT,related_name='receitas')
     categoria = models.CharField("Categoria",max_length=100,blank=False)
